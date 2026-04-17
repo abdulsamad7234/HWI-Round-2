@@ -1,17 +1,31 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
-        int LIS = 1;
-        int[] dp = new int[n];
-        Arrays.fill(dp, 1);
+        List<Integer> list = new ArrayList<>();
         for(int i = 0; i < n; i++){
-            for(int j = 0; j < i; j++){
-                if(nums[j] < nums[i]){
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                    LIS = Math.max(LIS, dp[i]);
-                }
+            int idx = findLower(nums[i], list);
+            if(idx == list.size()){
+                list.add(nums[i]);
+            }else{
+                list.set(idx, nums[i]);
             }
         }
-        return LIS;
+        return list.size();
+    }
+
+    public int findLower(int target, List<Integer> list){
+        int ans = list.size();
+        int low = 0;
+        int high = list.size() - 1;
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+            if(list.get(mid) >= target){
+                ans = mid;
+                high = mid - 1;
+            }else{
+                low = mid + 1;
+            }
+        }
+        return ans;
     }
 }
