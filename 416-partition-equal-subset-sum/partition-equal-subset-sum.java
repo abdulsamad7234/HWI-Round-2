@@ -1,5 +1,5 @@
 class Solution {
-    static Boolean[][] dp;
+    static boolean[][] dp;
     public boolean canPartition(int[] nums) {
         int target = 0;
         for(int i = 0; i < nums.length; i++){
@@ -9,7 +9,7 @@ class Solution {
             return false;
         }
         target /= 2;
-        dp = new Boolean[nums.length][target + 1];
+        dp = new boolean[nums.length][target + 1];
         for(int j = 0; j < target + 1; j++){
             if(j == nums[0]){
                 dp[0][j] = true;
@@ -35,25 +35,25 @@ class Solution {
         return dp[nums.length - 1][target];
     }
 
-    public boolean solve(int idx, int target, int[] nums){
-        if(idx == 0){
-            if(target == nums[0]){
-                return true;
-            }else{
-                return false;
-            }
-        }
-        if(target == 0){
-            return true;
-        }
-        if(dp[idx][target] != null){
-            return dp[idx][target];
-        }
-        boolean notTake = solve(idx - 1, target, nums);
-        boolean take = false;
-        if(target >= nums[idx]){
-            take = solve(idx - 1, target - nums[idx], nums);
-        }
-        return dp[idx][target] = take || notTake;
-    }
+    // public boolean solve(int idx, int target, int[] nums){
+    //     if(idx == 0){
+    //         if(target == nums[0]){
+    //             return true;
+    //         }else{
+    //             return false;
+    //         }
+    //     }
+    //     if(target == 0){
+    //         return true;
+    //     }
+    //     if(dp[idx][target] != null){
+    //         return dp[idx][target];
+    //     }
+    //     boolean notTake = solve(idx - 1, target, nums);
+    //     boolean take = false;
+    //     if(target >= nums[idx]){
+    //         take = solve(idx - 1, target - nums[idx], nums);
+    //     }
+    //     return dp[idx][target] = take || notTake;
+    // }
 }
