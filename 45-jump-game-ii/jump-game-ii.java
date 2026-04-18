@@ -18,7 +18,7 @@ class Solution {
             return dp[idx];
         }
         int minCost = (int)1e9;
-        for(int i = 1; i <= nums[idx]; i++){
+        for(int i = nums[idx]; i >= 1; i--){
             minCost = Math.min(minCost, 1 + solve(idx + i, nums));
         }
         return dp[idx] =  minCost;
