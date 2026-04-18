@@ -3,8 +3,17 @@ class Solution {
     public int jump(int[] nums) {
         int n = nums.length;
         dp = new int[n];
-        Arrays.fill(dp, -1);
-        return solve(0, nums);
+        dp[n - 1] = 0;
+        for(int i = n - 2; i >= 0; i--){
+            int minCost = (int)1e9;
+            for(int k = nums[i]; k >= 1; k--){
+                if(i + k < n){
+                    minCost = Math.min(minCost, 1 + dp[i + k]);
+                }
+            }
+            dp[i] = minCost;
+        }
+        return dp[0];
     }
 
     public int solve(int idx, int[] nums){
