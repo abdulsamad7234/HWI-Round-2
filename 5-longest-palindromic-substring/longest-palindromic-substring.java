@@ -4,27 +4,32 @@ class Solution {
         int maxL = 0;
         String ans = "";
         for(int i = 0; i < n; i++){
-            for(int j = i + 1; j <= n; j++){
-                String sub = s.substring(i, j);
-                if(isPalindrome(sub) && (j - i) > maxL){
-                    maxL = j - i;
-                    ans = sub;
-                }
+            int left = i;
+            int right = i;
+            while(left >= 0 && right < n && s.charAt(left) == s.charAt(right)){
+                left--;
+                right++;
             }
+            int len = right - left + 1;
+            if(len > maxL){
+                maxL = len;
+                ans = s.substring(left + 1, right);
+            }
+
+            if(i < n - 1){
+                left = i;
+                right = i + 1;
+                while(left >= 0 && right < n && s.charAt(left) == s.charAt(right)){
+                    left--;
+                    right++;
+                }
+                len = right - left + 1;
+                if(len > maxL){
+                    maxL = len;
+                    ans = s.substring(left + 1, right);
+                } 
+            }            
         }
         return ans;
-    }
-
-    public boolean isPalindrome(String s){
-        int left = 0;
-        int right = s.length() - 1;
-        while(left < right){
-            if(s.charAt(left) != s.charAt(right)){
-                return false;
-            }
-            left++;
-            right--;
-        }
-        return true;
     }
 }
