@@ -13,21 +13,15 @@ class Solution {
         for(int right = 0; right < s.length(); right++){
             char ch = s.charAt(right);
             arrS[ch]++;
-            if(isContains(arrS, arrT)){
-                if(minL > (right - left + 1)){
-                    minL = right - left + 1;
-                    startIdx = left;
-                }
-            }
             while(isContains(arrS, arrT)){
-                arrS[s.charAt(left)]--;
-                left++;
                 if(isContains(arrS, arrT)){
                     if(minL > (right - left + 1)){
                         minL = right - left + 1;
                         startIdx = left;
                     }
                 }
+                arrS[s.charAt(left)]--;
+                left++;
             }
         }
         return (minL == Integer.MAX_VALUE) ? "" : s.substring(startIdx, startIdx + minL);
