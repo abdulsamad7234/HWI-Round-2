@@ -23,10 +23,8 @@ class Solution {
         }
         if(right == null){
             return left;
-        }
-        if(left == null){
+        }else{
             return right;
         }
-        return null;
     }
 }
