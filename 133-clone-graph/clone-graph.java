@@ -32,14 +32,14 @@ class Solution {
     }
 
     public void DFS(Node node, Node clone){
-        for(Node adjNode : node.neighbors){
-            if(!map.containsKey(adjNode)){
-                Node newClone = new Node(adjNode.val);
-                map.put(adjNode, newClone);
+        for(Node nei : node.neighbors){
+            if(!map.containsKey(nei)){
+                Node newClone = new Node(nei.val);
+                map.put(nei, newClone);
                 clone.neighbors.add(newClone);
-                DFS(adjNode, newClone);
+                DFS(nei, newClone);
             }else{
-                clone.neighbors.add(map.get(adjNode));
+                clone.neighbors.add(map.get(nei));
             }
         }
     }
