@@ -1,37 +1,22 @@
 class Solution {
-    static Integer dp[][];
+    static Integer dp[];
     public int numSquares(int n) {
-        ArrayList<Integer> list = new ArrayList<>();
-        for(int i = 1; i <= n; i++){
-            if(isPerfectSquare(i)){
-                list.add(i);
-            }
-        }
-        dp = new Integer[list.size()][n + 1];
-        int ans = solve(list.size() - 1, n, list);
-        return ans;
+        dp = new Integer[n + 1];
+        return solve(n);
     }
 
-    public int solve(int idx, int target, List<Integer> list){
-        if(idx < 0){
-            return (int) 1e9;
-        }
-        if(target == 0){
+    public int solve(int n){
+        if(n == 0){
             return 0;
         }
-        if(dp[idx][target] != null){
-            return dp[idx][target];
+        if(dp[n] != null){
+            return dp[n];
         }
-        int notTake = solve(idx - 1, target, list);
-        int take = (int) 1e9;
-        if(list.get(idx) <= target){
-            take = 1 + solve(idx, target - list.get(idx), list);
+        int minCount = Integer.MAX_VALUE;
+        for(int i = 1; i * i <= n; i++){
+            int count = 1 + solve(n - (i * i));
+            minCount = Math.min(minCount, count);
         }
-        return dp[idx][target] = Math.min(take, notTake);
-    }
-
-    public boolean isPerfectSquare(int num){
-        int root = (int) Math.sqrt(num);
-        return (root * root) == num;
+        return dp[n] = minCount;
     }
 }
