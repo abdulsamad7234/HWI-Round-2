@@ -4,13 +4,30 @@ class Solution {
         int len2 = nums2.length;
         int[] arr = new int[len1 + len2];
         int idx = 0;
-        for(int  i = 0; i < len1; i++){
-            arr[idx++] = nums1[i];
+        int i = 0;
+        int j = 0;
+        while(i < len1 && j < len2){
+            if(nums1[i] < nums2[j]){
+                arr[idx] = nums1[i];
+                idx++;
+                i++;
+            }else{
+                arr[idx] = nums2[j];
+                idx++;
+                j++;
+            }
         }
-        for(int  i = 0; i < len2; i++){
-            arr[idx++] = nums2[i];
+        while(i < len1){
+            arr[idx] = nums1[i];
+            idx++;
+            i++;
         }
-        Arrays.sort(arr);
+        while(j < len2){
+            arr[idx] = nums2[j];
+            idx++;
+            j++;
+        }
+
         if(arr.length % 2 != 0){
             return arr[arr.length / 2];
         }
