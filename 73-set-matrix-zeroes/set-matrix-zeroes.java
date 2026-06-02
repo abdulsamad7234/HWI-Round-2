@@ -1,36 +1,41 @@
 class Solution {
     public void setZeroes(int[][] matrix) {
-        int m = matrix.length;  
-        int n = matrix[0].length;  
-        boolean firstRow = false;
-        boolean firstColumn = false;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] position = new int[m][n];
         for(int i = 0; i < m; i++){
             for(int j = 0; j < n; j++){
                 if(matrix[i][j] == 0){
-                    if(i == 0) firstRow = true;
-                    if(j == 0) firstColumn = true;
-                    matrix[i][0] = 0;
-                    matrix[0][j] = 0;
+                    position[i][j] = 1;
+                    int row = i;
+                    while(row >= 0){
+                        position[row][j] = 1;
+                        row--;
+                    }
+                    row = i;
+                    while(row < m){
+                        position[row][j] = 1;
+                        row++;
+                    }
+                    int col = j;
+                    while(col >= 0){
+                        position[i][col] = 1;
+                        col--;
+                    }
+                    col = j;
+                    while(col < n){
+                        position[i][col] = 1;
+                        col++;
+                    }
                 }
             }
         }
 
-        for(int i = 1; i < m; i++){
-            for(int j = 1; j < n; j++){
-                if(matrix[i][0] == 0 || matrix[0][j] == 0){
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(position[i][j] == 1){
                     matrix[i][j] = 0;
                 }
-            }
-        }
-
-        if(firstRow){
-            for(int j = 0; j < n; j++){
-                matrix[0][j] = 0;
-            }
-        }
-        if(firstColumn){
-            for(int i = 0; i < m; i++){
-                matrix[i][0] = 0;
             }
         }
     }
