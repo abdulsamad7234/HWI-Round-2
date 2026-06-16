@@ -1,23 +1,26 @@
 class Solution {
-    static Integer dp[];
     public int rob(int[] nums) {
-        dp = new Integer[nums.length];
-        int ans = solve(nums.length - 1, nums);
-        return (ans <= (int) -1e9) ? 0 : ans;
+        int[][] dp1 = new int[nums.length][2];
+        int[][] dp2 = new int[nums.length][2];
+        for(int i = 0; i < nums.length; i++){
+            Arrays.fill(dp1[i], -1);
+            Arrays.fill(dp2[i], -1);
+        }
+        return Math.max(solve(0, 0, nums, dp1), solve(0, 1, nums, dp2));
     }
 
-    public int solve(int idx, int[] nums){
-        if(idx == 0){
-            return nums[0];
-        }
-        if(idx < 0){
+    int solve(int idx, int check, int[] nums, int[][] dp){
+        if(idx == nums.length){
             return 0;
         }
-        if(dp[idx] != null){
-            return dp[idx];
+        if(dp[idx][check] != -1){
+            return dp[idx][check];
         }
-        int notTake = solve(idx - 1, nums);
-        int take = nums[idx] + solve(idx - 2, nums);
-        return dp[idx] = Math.max(notTake, take);
+        if(check == 0){
+            int take = nums[idx] + solve(idx + 1, 1, nums, dp);
+            int notTake = solve(idx + 1, 0, nums, dp);
+            return dp[idx][check] = Math.max(take, notTake);
+        }
+        return dp[idx][check] = solve(idx + 1, 0, nums, dp);
     }
 }
