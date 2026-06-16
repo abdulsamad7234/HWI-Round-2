@@ -1,26 +1,32 @@
 class Solution {
-    static Integer[][] dp;
     public int coinChange(int[] coins, int amount) {
-        dp = new Integer[coins.length][amount + 1];
-        int ans = solve(coins.length - 1, amount, coins);
-        return (ans >= (int) 1e9) ? -1 : ans;
+        int dp[][] = new int[coins.length][amount + 1];
+        for(int i = 0; i < dp.length; i++){
+            Arrays.fill(dp[i], -1);
+        }
+        int ans = solve(coins.length - 1, amount, coins, dp);
+        if(ans >= (int) 1e9){
+            return -1;
+        }
+        return ans;
     }
 
-    public int solve(int idx, int target, int[] coins){
+    int solve(int idx, int target, int[] coins, int[][] dp){
         if(idx < 0){
             return (int) 1e9;
         }
         if(target == 0){
             return 0;
         }
-        if(dp[idx][target] != null){
+        if(dp[idx][target] != -1){
             return dp[idx][target];
         }
-        int notTake = solve(idx - 1, target, coins);
-        int take = (int) 1e9;
-        if(target >= coins[idx]){
-            take = 1 + solve(idx, target - coins[idx], coins);
+        if(coins[idx] <= target){
+            int take = 1 + solve(idx, target - coins[idx], coins, dp);
+            int notTake = solve(idx - 1, target, coins, dp);
+            return dp[idx][target] = Math.min(take, notTake);
         }
-        return dp[idx][target] = Math.min(take, notTake);
+        int notTake = solve(idx - 1, target, coins, dp);
+        return dp[idx][target] = notTake;
     }
 }
