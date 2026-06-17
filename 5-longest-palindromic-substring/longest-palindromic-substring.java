@@ -10,10 +10,12 @@ class Solution {
                 left--;
                 right++;
             }
+            left++;
+            right--;
             int len = right - left + 1;
             if(len > maxL){
                 maxL = len;
-                ans = s.substring(left + 1, right);
+                ans = s.substring(left, right + 1);
             }
 
             if(i < n - 1){
@@ -23,10 +25,12 @@ class Solution {
                     left--;
                     right++;
                 }
+                left++;
+                right--;
                 len = right - left + 1;
                 if(len > maxL){
                     maxL = len;
-                    ans = s.substring(left + 1, right);
+                    ans = s.substring(left, right + 1);
                 } 
             }            
         }
