@@ -1,42 +1,66 @@
 class Solution {
-    public List<List<Integer>> pacificAtlantic(int[][] heights) {
-        
-        int rlen = heights.length;
-        int clen = heights[0].length;
-        
-        List<List<Integer>> output = new ArrayList();
-        boolean[][] atlantic = new boolean[rlen][clen];
-        boolean[][] pacific = new boolean[rlen][clen];
 
-		//Do a DFS on all nodes at the pacific end and the atlantic end:
-        for(int r = 0; r < rlen; r++){
-            for(int c = 0; c < clen; c++){          
-                if(r == 0 || c == 0){ dfs(pacific, heights, r, c, 0);}
-                if(r == rlen-1 || c == clen-1){ dfs(atlantic, heights, r, c, 0); }
-            }
+    int m, n;
+    int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+
+        m = heights.length;
+        n = heights[0].length;
+
+        boolean[][] pacific = new boolean[m][n];
+        boolean[][] atlantic = new boolean[m][n];
+
+        // DFS from Pacific borders (top row and left column)
+        for (int i = 0; i < m; i++) {
+            dfs(heights, pacific, i, 0);
         }
-        
-		// Check which locations can reach both pacific and atlantic:
-        for(int r = 0; r < rlen; r++){
-            for(int c = 0; c < clen; c++){          
-                if(atlantic[r][c] && pacific[r][c]){
-                    output.add(Arrays.asList(r,c));
+
+        for (int j = 0; j < n; j++) {
+            dfs(heights, pacific, 0, j);
+        }
+
+        // DFS from Atlantic borders (bottom row and right column)
+        for (int i = 0; i < m; i++) {
+            dfs(heights, atlantic, i, n - 1);
+        }
+
+        for (int j = 0; j < n; j++) {
+            dfs(heights, atlantic, m - 1, j);
+        }
+
+        List<List<Integer>> ans = new ArrayList<>();
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (pacific[i][j] && atlantic[i][j]) {
+                    ans.add(Arrays.asList(i, j));
                 }
             }
         }
-        return output;
+
+        return ans;
     }
-    
-    // Go to a node - all the larger ones around it can reach the current sea:
-    public void dfs(boolean[][] sea, int[][] grid, int r, int c, int prev){
-        if(r < 0 || r >= grid.length || c < 0 || c >= grid[0].length) return;
-        if(grid[r][c] < prev) return;
-        if(sea[r][c]) return; 
-        
-        sea[r][c] = true;
-        dfs(sea, grid, r+1, c, grid[r][c]); // bottom 
-        dfs(sea, grid, r-1, c, grid[r][c]); // top 
-        dfs(sea, grid, r, c-1, grid[r][c]); // left 
-        dfs(sea, grid, r, c+1, grid[r][c]); // right
+
+    private void dfs(int[][] heights, boolean[][] visited, int row, int col) {
+
+        if (visited[row][col]) return;
+
+        visited[row][col] = true;
+
+        for (int[] dir : directions) {
+
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+
+            if (newRow < 0 || newRow >= m || newCol < 0 || newCol >= n)
+                continue;
+
+            // Reverse flow:
+            // We can move only to cells having height >= current cell.
+            if (heights[newRow][newCol] >= heights[row][col]) {
+                dfs(heights, visited, newRow, newCol);
+            }
+        }
     }
 }
