@@ -10,40 +10,37 @@ class Solution {
             int t = edge[2];
             adjList.get(u).add(new Pair(v, t));
         }
-        
+
         long[][] dist = new long[n][power + 1];
-        for(long[] row : dist){
-            Arrays.fill(row, Long.MAX_VALUE);
+        for(int i = 0; i < n; i++){
+            Arrays.fill(dist[i], Long.MAX_VALUE);
         }
 
         PriorityQueue<Triplet> pq = new PriorityQueue<>((a, b) -> {
             if(a.time == b.time){
-                return Long.compare(b.power, a.power);
+                return Integer.compare(b.power, a.power);
             }else{
                 return Long.compare(a.time, b.time);
             }
         });
-
-        dist[source][power] = 0;
         pq.offer(new Triplet(source, 0, power));
+        dist[source][power] = 0;
+        
         while(!pq.isEmpty()){
             Triplet curr = pq.poll();
             int u = curr.node;
             long t = curr.time;
             int p = curr.power;
+            if(u == target) return new long[]{t, p};
             if(t > dist[u][p]) continue;
-            if(u == target){
-                return new long[]{t, p};
-            }
             for(Pair adjPair : adjList.get(u)){
-                int adjNode = adjPair.node;
-                long adjTime = adjPair.time;
-
+                int v = adjPair.node;
+                long newTime = t + adjPair.time;
                 int newPower = p - cost[u];
-                long newTime = t + adjTime;
-                if(newPower >= 0 && newTime < dist[adjNode][newPower]){
-                    dist[adjNode][newPower] = newTime;
-                    pq.add(new Triplet(adjNode, newTime, p - cost[u]));
+
+                if(newPower >= 0 && newTime < dist[v][newPower]){
+                    dist[v][newPower] = newTime;
+                    pq.add(new Triplet(v, newTime, newPower));
                 }
             }
         }
@@ -52,8 +49,8 @@ class Solution {
 
     class Pair{
         int node;
-        long time;
-        Pair(int node, long time){
+        int time;
+        Pair(int node, int time){
             this.node = node;
             this.time = time;
         }
