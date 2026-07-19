@@ -2,6 +2,7 @@ class Solution {
     public void nextPermutation(int[] nums) {
         int n = nums.length;
         int idxToSwap = -1;
+
         for(int i = n - 1; i > 0; i--){
             if(nums[i - 1] < nums[i]){
                 idxToSwap = i - 1;
@@ -9,7 +10,6 @@ class Solution {
             }
         }
 
-        
         if(idxToSwap != -1){
             for(int i = n - 1; i >= idxToSwap + 1; i--){
                 if(nums[i] > nums[idxToSwap]){
@@ -20,7 +20,6 @@ class Solution {
         }
 
         reverse(idxToSwap + 1, n - 1, nums);
-        
     }
 
     void swap(int i, int j, int[] nums){
@@ -29,11 +28,11 @@ class Solution {
         nums[j] = temp;
     }
 
-    void reverse(int start, int end, int nums[]){
-        while(start < end){
-            swap(start, end, nums);
-            start++;
-            end--;
+    void reverse(int i, int j, int[] nums){
+        while(i < j){
+            swap(i, j, nums);
+            i++;
+            j--;
         }
     }
 }
