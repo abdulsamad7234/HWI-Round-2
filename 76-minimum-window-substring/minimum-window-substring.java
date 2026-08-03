@@ -14,11 +14,9 @@ class Solution {
             char ch = s.charAt(right);
             arrS[ch]++;
             while(isContains(arrS, arrT)){
-                if(isContains(arrS, arrT)){
-                    if(minL > (right - left + 1)){
-                        minL = right - left + 1;
-                        startIdx = left;
-                    }
+                if(minL > (right - left + 1)){
+                    minL = right - left + 1;
+                    startIdx = left;
                 }
                 arrS[s.charAt(left)]--;
                 left++;
