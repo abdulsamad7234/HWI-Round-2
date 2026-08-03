@@ -1,26 +1,19 @@
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> b.count - a.count);
         Map<Integer, Integer> map = new HashMap<>();
         for(int i = 0; i < nums.length; i++){
-            int count = 0;
-            if(map.containsKey(nums[i])){
-                count = map.get(nums[i]);
-            }
-            map.put(nums[i], count + 1);
-            pq.offer(new Pair(nums[i], count + 1));
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
+        
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> b.count - a.count);
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()){
+            pq.offer(new Pair(entry.getKey(), entry.getValue()));
         }
 
         int[] ans = new int[k];
-        Set<Integer> set = new HashSet<>();
-        int i = 0;
-        while(i != k){
+        for(int i = 0; i < k; i++){
             Pair curr = pq.poll();
-            if(!set.contains(curr.value)){
-                ans[i] = curr.value;
-                set.add(curr.value);
-                i++;
-            }
+            ans[i] = curr.value;
         }
         return ans;
     }
