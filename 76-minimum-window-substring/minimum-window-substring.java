@@ -1,37 +1,36 @@
 class Solution {
     public String minWindow(String s, String t) {
-        int[] arrS = new int[256];
-        int[] arrT = new int[256];
+        if(t.length() > s.length()) return "";
+        int[] need = new int[128];
+        int required = 0;
         for(int i = 0; i < t.length(); i++){
             char ch = t.charAt(i);
-            arrT[ch]++;
+            need[ch]++;
+            required++;
         }
-
-        int minL = Integer.MAX_VALUE;
-        int startIdx = -1;
+        
         int left = 0;
-        for(int right = 0; right < s.length(); right++){
+        int maxL = Integer.MAX_VALUE;
+        int start = 0;
+        for(int right  = 0; right < s.length(); right++){
             char ch = s.charAt(right);
-            arrS[ch]++;
-            while(isContains(arrS, arrT)){
-                if(minL > (right - left + 1)){
-                    minL = right - left + 1;
-                    startIdx = left;
+            if(need[ch] > 0){
+                required--;
+            }
+            need[ch]--;
+            while(required == 0){
+                if(right - left + 1 < maxL){
+                    maxL = right - left + 1;
+                    start = left;
                 }
-                arrS[s.charAt(left)]--;
+                
+                ch = s.charAt(left);
+                need[ch]++;
+                if(need[ch] > 0) required++;
                 left++;
             }
         }
-        return (minL == Integer.MAX_VALUE) ? "" : s.substring(startIdx, startIdx + minL);
 
-    }
-
-    boolean isContains(int[] arrS, int[] arrT){
-        for(int i = 0; i < 256; i++){
-            if(arrT[i] > arrS[i]){
-                return false;
-            }
-        }
-        return true;
+        return maxL == Integer.MAX_VALUE ? "" : s.substring(start, start + maxL);
     }
 }
