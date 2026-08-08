@@ -16,7 +16,10 @@ class Solution {
         int curr = 0;
         for(int i = 0; i < n; i++){
             curr = (curr + nums[i]) % p;
-            int target = (curr - need + p) % p;
+            int target = (curr - need) % p;
+            if(target < 0){
+                target += p;
+            }
             if(map.containsKey(target)){
                 int idx = map.get(target);
                 if(i - idx < minL){
