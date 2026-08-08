@@ -6,7 +6,7 @@ class Solution {
         int curr = 0;
         int count = 0;
         for(int i = 0; i < n; i++){
-            curr = (curr + nums[i] + k) % k;
+            curr = (curr + nums[i]) % k;
             if(curr < 0){
                 curr += k;
             }
