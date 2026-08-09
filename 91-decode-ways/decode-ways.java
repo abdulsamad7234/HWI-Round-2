@@ -15,7 +15,7 @@ class Solution {
         }
         if(dp[idx] != -1) return dp[idx];
         int ways = 0;
-        for(int j = idx + 1; j <= s.length(); j++){
+        for(int j = idx + 1; j <= Math.min(idx + 2, s.length()); j++){
             String sub = s.substring(idx, j);
             if(set.contains(sub)){
                 ways += solve(j, s, set, dp);
