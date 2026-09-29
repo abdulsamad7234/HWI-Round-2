@@ -17,13 +17,4 @@ class Solution {
         }
         return ans + max_pairs;
     }
-
-    class Pair{
-        int a;
-        int b;
-        Pair(int a, int b){
-            this.a = a;
-            this.b = b;
-        }
-    }
 }
