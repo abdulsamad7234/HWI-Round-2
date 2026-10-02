@@ -1,51 +1,37 @@
 class Solution {
     public String reverseWords(String s) {
 
-        s = s.trim();
+        StringBuilder ans = new StringBuilder();
 
-        StringBuilder stb = new StringBuilder();
+        int i = s.length() - 1;
 
-        int i = 0;
+        while (i >= 0) {
 
-        while (i < s.length()) {
-
-            if (s.charAt(i) != ' ') {
-                stb.append(s.charAt(i));
-            } 
-            else if (stb.length() > 0 && stb.charAt(stb.length() - 1) != ' ') {
-                stb.append(' ');
+            while (i >= 0 && s.charAt(i) == ' ') {
+                i--;
             }
 
-            i++;
-        }
-
-        int left = 0;
-
-        for (int right = 0; right < stb.length(); right++) {
-
-            if (stb.charAt(right) == ' ') {
-                reverse(left, right - 1, stb);
-                left = right + 1;
+            if (i < 0) {
+                break;
             }
+
+            int j = i;
+
+            while (j >= 0 && s.charAt(j) != ' ') {
+                j--;
+            }
+
+            if (ans.length() > 0) {
+                ans.append(' ');
+            }
+
+            for (int k = j + 1; k <= i; k++) {
+                ans.append(s.charAt(k));
+            }
+
+            i = j - 1;
         }
 
-        reverse(left, stb.length() - 1, stb);
-
-        reverse(0, stb.length() - 1, stb);
-
-        return stb.toString();
-    }
-
-    void reverse(int i, int j, StringBuilder stb) {
-
-        while (i < j) {
-            char temp = stb.charAt(i);
-
-            stb.setCharAt(i, stb.charAt(j));
-            stb.setCharAt(j, temp);
-
-            i++;
-            j--;
-        }
+        return ans.toString();
     }
 }
