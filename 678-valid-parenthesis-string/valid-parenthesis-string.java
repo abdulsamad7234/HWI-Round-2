@@ -1,41 +1,24 @@
 class Solution {
-
     public boolean checkValidString(String s) {
+        Boolean[][] dp = new Boolean[s.length()][s.length() + 1];
+        return solve(0, 0, s, dp);
+    }
 
-        int minOpen = 0;
-        int maxOpen = 0;
-
-        for (int i = 0; i < s.length(); i++) {
-
-            char ch = s.charAt(i);
-
-            if (ch == '(') {
-
-                minOpen++;
-                maxOpen++;
-
-            } else if (ch == ')') {
-
-                minOpen--;
-                maxOpen--;
-
-            } else { // '*'
-
-                minOpen--;
-                maxOpen++;
-            }
-
-            // Even the best case has too many ')'
-            if (maxOpen < 0) {
-                return false;
-            }
-
-            // We cannot have negative minimum possible opens
-            if (minOpen < 0) {
-                minOpen = 0;
-            }
+    boolean solve(int idx, int open, String s, Boolean[][] dp){
+        if(idx == s.length()){
+            return open == 0;
         }
+        if(open < 0) return false;
+        
+        if(dp[idx][open] != null) return dp[idx][open];
 
-        return minOpen == 0;
+        char ch = s.charAt(idx);
+        if(ch == '('){
+            return dp[idx][open] = solve(idx + 1, open + 1, s, dp);
+        }else if(ch == ')'){
+            return dp[idx][open] = solve(idx + 1, open - 1, s, dp);
+        }else{
+            return dp[idx][open] = solve(idx + 1, open + 1, s, dp) || solve(idx + 1, open - 1, s, dp) || solve(idx + 1, open, s, dp);
+        }
     }
 }
